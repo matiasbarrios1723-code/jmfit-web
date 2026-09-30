@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JM FIT — Entrenamiento personal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0B0B0D;
+    --surface:#151517;
+    --surface-2:#1E1E21;
+    --line:#2B2B2F;
+    --red:#E4283A;
+    --red-dim:#7A1622;
+    --text:#F4F3F0;
+    --text-dim:#9C9CA1;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  html{scroll-padding-top:76px; scroll-behavior:smooth;}
+  *,*::before,*::after{box-sizing:inherit;}
+  html,body{margin:0; height:100%;}
+  body{
+    background:var(--void);
+    color:var(--text);
+    font-family:'Space Grotesk', -apple-system, sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    line-height:0.95;
+    margin:0;
+  }
+  p{margin:0;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+  img,svg{max-width:100%; display:block;}
+
+  /* ---- Nav ---- */
+  header{
+    position:sticky; top:0; z-index:50;
+    padding-top:env(safe-area-inset-top,0px);
+    background:rgba(11,11,13,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800; font-size:24px; letter-spacing:0.5px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{width:9px; height:9px; border-radius:50%; background:var(--red);}
+  .nav-links{display:flex; gap:32px; font-size:15px; color:var(--text-dim);}
+  .nav-links a:hover{color:var(--text);}
+  .nav-actions{display:flex; align-items:center; gap:12px;}
+  .btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14px; font-weight:600;
+    padding:10px 20px; border-radius:8px;
+    border:1px solid transparent; cursor:pointer;
+    transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    display:inline-block;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-ghost{color:var(--text); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--text-dim);}
+  .btn-solid{background:var(--red); color:#fff;}
+  .btn-solid:hover{background:#c8202f;}
+  .burger{display:none; width:32px; height:32px; border:none; background:none; cursor:pointer; padding:0;}
+  .burger span{display:block; width:22px; height:2px; background:var(--text); margin:5px auto; transition:.2s;}
+  .mobile-panel{display:none; flex-direction:column; gap:2px; padding:0 24px 20px; border-bottom:1px solid var(--line);}
+  .mobile-panel a{padding:12px 0; border-bottom:1px solid var(--line); color:var(--text-dim); font-size:15px;}
+  .mobile-panel .btn{margin-top:12px; text-align:center;}
+
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .nav-actions .btn-ghost{display:none;}
+    .burger{display:block;}
+    .mobile-panel.open{display:flex;}
+  }
+
+  /* ---- Hero ---- */
+  .hero{
+    position:relative;
+    padding:88px 0 96px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center;
+  }
+  .eyebrow-tag{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13px; color:var(--text-dim);
+    border:1px solid var(--line); border-radius:100px;
+    padding:6px 14px; margin-bottom:28px;
+  }
+  .eyebrow-tag .dot{width:6px; height:6px; border-radius:50%; background:var(--red);}
+  h1.hero-title{
+    font-size:clamp(44px, 6.4vw, 78px);
+    letter-spacing:0.2px;
+  }
+  h1.hero-title .accent{color:var(--red);}
+  .hero-sub{
+    margin-top:24px; max-width:46ch;
+    color:var(--text-dim); font-size:17px;
+  }
+  .hero-ctas{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+  .hero-ctas .btn{padding:14px 28px; font-size:15px;}
+  .hero-stats{display:flex; gap:36px; margin-top:56px; flex-wrap:wrap;}
+  .hero-stats div b{
+    font-family:'Big Shoulders Display', sans-serif; font-size:32px; font-weight:800; display:block;
+  }
+  .hero-stats div span{color:var(--text-dim); font-size:13px;}
+
+  .hero-visual{position:relative; aspect-ratio:4/5; border-radius:20px; overflow:hidden; background:var(--surface);}
+  .hero-visual svg{width:100%; height:100%;}
+  .play-chip{
+    position:absolute; left:20px; bottom:20px;
+    display:flex; align-items:center; gap:10px;
+    background:rgba(11,11,13,0.72); backdrop-filter:blur(6px);
+    border:1px solid var(--line); border-radius:100px;
+    padding:8px 16px 8px 8px; font-size:13px; color:var(--text);
+  }
+  .play-chip .circle{
+    width:30px; height:30px; border-radius:50%; background:var(--red);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{aspect-ratio:16/10; order:-1;}
+  }
+
+  /* ---- Sections generic ---- */
+  section{padding:88px 0;}
+  .section-head{max-width:640px; margin-bottom:52px;}
+  .section-head h2{font-size:clamp(32px,4.4vw,46px);}
+  .section-head p{color:var(--text-dim); margin-top:14px; font-size:16px;}
+  .divider{border:none; border-top:1px solid var(--line); margin:0;}
+
+  /* Servicios */
+  .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .service-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:32px; transition:border-color .2s ease;
+  }
+  .service-card:hover{border-color:var(--red-dim);}
+  .service-card .num{font-family:'Big Shoulders Display'; font-size:15px; color:var(--red); font-weight:700; margin-bottom:18px; display:block;}
+  .service-card h3{font-size:24px; margin-bottom:12px;}
+  .service-card p{color:var(--text-dim); font-size:15px;}
+  @media (max-width:860px){.services-grid{grid-template-columns:1fr;}}
+
+  /* Entrenamiento */
+  .method-wrap{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
+  .method-list{display:flex; flex-direction:column;}
+  .method-item{
+    display:flex; gap:20px; padding:22px 0; border-bottom:1px solid var(--line);
+  }
+  .method-item:first-child{padding-top:0;}
+  .method-item b{font-family:'Big Shoulders Display'; font-size:22px; color:var(--red); min-width:34px;}
+  .method-item h4{font-size:17px; font-weight:600; margin-bottom:6px; font-family:'Space Grotesk';}
+  .method-item p{color:var(--text-dim); font-size:14.5px;}
+  .method-panel{
+    background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:36px;
+  }
+  .day-row{display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); font-size:14px;}
+  .day-row:last-child{border-bottom:none;}
+  .day-row .tag{color:var(--text-dim); font-size:12px;}
+  .bar-bg{height:6px; background:var(--surface-2); border-radius:3px; margin-top:8px; overflow:hidden;}
+  .bar-fill{height:100%; background:var(--red); border-radius:3px;}
+  @media (max-width:860px){.method-wrap{grid-template-columns:1fr;}}
+
+  /* Planes */
+  .plans-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .plan-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:32px;
+    display:flex; flex-direction:column;
+  }
+  .plan-card.featured{border-color:var(--red); background:linear-gradient(180deg,var(--surface),var(--surface-2));}
+  .plan-name{font-size:14px; color:var(--text-dim); text-transform:none; margin-bottom:10px;}
+  .plan-price{font-family:'Big Shoulders Display'; font-size:44px; font-weight:800;}
+  .plan-price span{font-size:15px; color:var(--text-dim); font-family:'Space Grotesk'; font-weight:400;}
+  .plan-feats{margin:24px 0 28px; display:flex; flex-direction:column; gap:12px; font-size:14.5px; color:var(--text-dim);}
+  .plan-feats li{list-style:none; display:flex; gap:10px;}
+  .plan-feats li::before{content:"—"; color:var(--red);}
+  .plan-card .btn{margin-top:auto;}
+  @media (max-width:860px){.plans-grid{grid-template-columns:1fr;}}
+
+  /* Testimonios */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .testi-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:28px;}
+  .testi-card p.quote{font-size:15.5px; color:var(--text); margin-bottom:20px;}
+  .testi-who{display:flex; align-items:center; gap:12px;}
+  .avatar{width:38px; height:38px; border-radius:50%; background:var(--surface-2); border:1px solid var(--line);}
+  .testi-who b{font-size:14px; display:block;}
+  .testi-who span{font-size:12.5px; color:var(--text-dim);}
+  @media (max-width:860px){.testi-grid{grid-template-columns:1fr;}}
+
+  /* Contacto */
+  .contact-wrap{
+    display:grid; grid-template-columns:1fr 1fr; gap:56px;
+    background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:48px;
+  }
+  .contact-info h2{font-size:34px; margin-bottom:16px;}
+  .contact-info p{color:var(--text-dim); font-size:15px; max-width:38ch;}
+  .contact-detail{margin-top:28px; display:flex; flex-direction:column; gap:14px; font-size:14.5px;}
+  .contact-detail span{color:var(--text-dim); display:block; font-size:12px;}
+  .contact-detail a{color:var(--text); text-decoration:underline; text-decoration-color:var(--red); text-underline-offset:3px; word-break:break-all;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; color:var(--text-dim); margin-bottom:6px;}
+  .field input, .field textarea{
+    width:100%; background:var(--surface-2); border:1px solid var(--line); border-radius:8px;
+    padding:12px 14px; color:var(--text); font-family:inherit; font-size:14.5px;
+  }
+  .field input:focus, .field textarea:focus{outline:2px solid var(--red); outline-offset:1px;}
+  .field textarea{resize:vertical; min-height:88px;}
+  @media (max-width:860px){.contact-wrap{grid-template-columns:1fr; padding:28px;}}
+
+  footer{padding:40px 0; border-top:1px solid var(--line);}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;}
+  .footer-row .logo{font-size:18px;}
+  .foot-links{display:flex; gap:24px; font-size:13.5px; color:var(--text-dim);}
+  .foot-copy{color:var(--text-dim); font-size:12.5px; margin-top:20px;}
+
+  :focus-visible{outline:2px solid var(--red); outline-offset:2px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none !important; scroll-behavior:auto !important;}}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>JM FIT</div>
+    <div class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#entrenamiento">Entrenamiento</a>
+      <a href="#planes">Planes</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <div class="nav-actions">
+      <a href="#contacto" class="btn btn-solid">Quiero ser cliente</a>
+      <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#inicio">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#entrenamiento">Entrenamiento</a>
+    <a href="#planes">Planes</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#contacto">Contacto</a>
+    <a href="#contacto" class="btn btn-solid">Quiero ser cliente</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow-tag"><span class="dot"></span>Personal trainer · Gym Eleven Club</div>
+        <h1 class="hero-title">Transforma tu cuerpo.<br>Mejora tu <span class="accent">rendimiento</span>.<br>Cambia tu estilo de vida.</h1>
+        <p class="hero-sub">Soy Jean Barrios, especialista en biomecánica y entrenamiento enfocado en la activación y el aislamiento muscular. Rutinas, nutrición y seguimiento diseñados para ti.</p>
+        <div class="hero-ctas">
+          <a href="#contacto" class="btn btn-solid">Comenzar ahora</a>
+          <a href="#servicios" class="btn btn-ghost">Ver cómo funciona</a>
+        </div>
+        <div class="hero-stats">
+          <div><b>1 a 1</b><span>entrenamiento personalizado</span></div>
+          <div><b>Biomecánica</b><span>técnica y activación</span></div>
+          <div><b>Eleven Club</b><span>Av. Argentina 2529</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1E1E21"/>
+              <stop offset="100%" stop-color="#0B0B0D"/>
+            </linearGradient>
+            <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E4283A"/>
+              <stop offset="100%" stop-color="#7A1622"/>
+            </linearGradient>
+          </defs>
+          <rect width="480" height="560" fill="url(#g1)"/>
+          <g opacity="0.5">
+            <line x1="0" y1="90" x2="480" y2="90" stroke="#2B2B2F"/>
+            <line x1="0" y1="220" x2="480" y2="220" stroke="#2B2B2F"/>
+            <line x1="0" y1="350" x2="480" y2="350" stroke="#2B2B2F"/>
+            <line x1="0" y1="480" x2="480" y2="480" stroke="#2B2B2F"/>
+          </g>
+          <circle cx="240" cy="230" r="120" fill="none" stroke="url(#g2)" stroke-width="14"/>
+          <circle cx="240" cy="230" r="120" fill="none" stroke="#2B2B2F" stroke-width="14" stroke-dasharray="754" stroke-dashoffset="188" transform="rotate(-90 240 230)"/>
+          <text x="240" y="222" text-anchor="middle" fill="#F4F3F0" font-family="Big Shoulders Display" font-weight="800" font-size="46">75%</text>
+          <text x="240" y="252" text-anchor="middle" fill="#9C9CA1" font-family="Space Grotesk" font-size="14">plan semanal</text>
+          <rect x="60" y="410" width="360" height="110" rx="14" fill="#151517" stroke="#2B2B2F"/>
+          <text x="86" y="448" fill="#F4F3F0" font-family="Space Grotesk" font-weight="600" font-size="15">Sentadilla — 4x8</text>
+          <text x="86" y="470" fill="#9C9CA1" font-family="Space Grotesk" font-size="12.5">100 kg · 90s descanso</text>
+          <rect x="86" y="486" width="308" height="6" rx="3" fill="#2B2B2F"/>
+          <rect x="86" y="486" width="220" height="6" rx="3" fill="#E4283A"/>
+        </svg>
+        <div class="play-chip">
+          <span class="circle">▶</span>
+          Video de presentación
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Lo que incluye tu plan</h2>
+        <p>Cada cliente recibe un programa hecho a medida, no una plantilla genérica.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="num">01</span>
+          <h3>Entrenamiento</h3>
+          <p>Rutinas por objetivo y nivel, con ejercicios en video, cargas y progresión semana a semana.</p>
+        </div>
+        <div class="service-card">
+          <span class="num">02</span>
+          <h3>Nutrición</h3>
+          <p>Plan de comidas ajustado a tus calorías y macros, con reemplazos de alimentos incluidos.</p>
+        </div>
+        <div class="service-card">
+          <span class="num">03</span>
+          <h3>Seguimiento</h3>
+          <p>Medidas, fotos de progreso y gráficos de evolución revisados junto a tu entrenador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTRENAMIENTO -->
+  <section id="entrenamiento" style="background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap method-wrap">
+      <div>
+        <div class="section-head" style="margin-bottom:36px;">
+          <h2>Cómo trabajamos</h2>
+          <p>Un proceso simple, pensado para que sepas siempre qué sigue.</p>
+        </div>
+        <div class="method-list">
+          <div class="method-item">
+            <b>01</b>
+            <div><h4>Evaluación inicial</h4><p>Objetivos, historial y medidas de partida.</p></div>
+          </div>
+          <div class="method-item">
+            <b>02</b>
+            <div><h4>Plan personalizado</h4><p>Rutina y nutrición diseñadas para tu día a día.</p></div>
+          </div>
+          <div class="method-item">
+            <b>03</b>
+            <div><h4>Seguimiento semanal</h4><p>Ajustes según tu progreso real, no un plan fijo.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="method-panel">
+        <p style="font-size:13px; color:var(--text-dim); margin-bottom:18px;">Día 1 — Piernas</p>
+        <div class="day-row"><span>Sentadilla</span><span class="tag">4×8 · 100 kg</span></div>
+        <div class="day-row"><span>Prensa</span><span class="tag">4×10 · 180 kg</span></div>
+        <div class="day-row"><span>Zancadas</span><span class="tag">3×12 · peso corporal</span></div>
+        <div class="day-row"><span>Curl femoral</span><span class="tag">3×12 · 40 kg</span></div>
+        <p style="font-size:13px; color:var(--text-dim); margin-top:22px;">Completado</p>
+        <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANES -->
+  <section id="planes">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Planes</h2>
+        <p>Elige el nivel de acompañamiento que necesitas. Puedes cambiar de plan cuando quieras.</p>
+      </div>
+      <div class="plans-grid">
+        <div class="plan-card">
+          <p class="plan-name">Base</p>
+          <p class="plan-price"><span style="font-size:.55em">Consultar</span></p>
+          <ul class="plan-feats">
+            <li>Rutina mensual</li>
+            <li>Ajustes cada 4 semanas</li>
+            <li>Acceso a biblioteca de ejercicios</li>
+          </ul>
+          <a href="#contacto" class="btn btn-ghost">Elegir plan</a>
+        </div>
+        <div class="plan-card featured">
+          <p class="plan-name">Personalizado</p>
+          <p class="plan-price"><span style="font-size:.55em">Consultar</span></p>
+          <ul class="plan-feats">
+            <li>Rutina y nutrición a medida</li>
+            <li>Seguimiento semanal</li>
+            <li>Mensajería directa con tu entrenador</li>
+            <li>Fotos y medidas de progreso</li>
+          </ul>
+          <a href="#contacto" class="btn btn-solid">Elegir plan</a>
+        </div>
+        <div class="plan-card">
+          <p class="plan-name">Presencial</p>
+          <p class="plan-price"><span style="font-size:.55em">Consultar</span></p>
+          <ul class="plan-feats">
+            <li>Sesiones presenciales</li>
+            <li>Plan online incluido</li>
+            <li>Evaluación física mensual</li>
+          </ul>
+          <a href="#contacto" class="btn btn-ghost">Elegir plan</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="testimonios" style="background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Resultados reales</h2>
+        <p>Historias de clientes que entrenan con este método.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <p class="quote">Bajé de peso sin dejar de comer bien. Los reemplazos de comida hicieron toda la diferencia.</p>
+          <div class="testi-who"><div class="avatar"></div><div><b>Carlos R.</b><span>Cliente hace 8 meses</span></div></div>
+        </div>
+        <div class="testi-card">
+          <p class="quote">Nunca había llevado un seguimiento tan de cerca de mis medidas y mi fuerza.</p>
+          <div class="testi-who"><div class="avatar"></div><div><b>Matías G.</b><span>Cliente hace 1 año</span></div></div>
+        </div>
+        <div class="testi-card">
+          <p class="quote">Poder ver el video de cada ejercicio antes de hacerlo me dio mucha más seguridad.</p>
+          <div class="testi-who"><div class="avatar"></div><div><b>Diego F.</b><span>Cliente hace 5 meses</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="wrap">
+      <div class="contact-wrap">
+        <div class="contact-info">
+          <h2>Empecemos<br>tu plan</h2>
+          <p>Cuéntame tu objetivo y te respondo en menos de 24 horas con el plan que mejor se adapta a ti.</p>
+          <div class="contact-detail">
+            <div><span>Correo</span><a href="mailto:Matiasbarrios1723@gmail.com">Matiasbarrios1723@gmail.com</a></div>
+            <div><span>WhatsApp</span><a href="https://wa.me/56997528322" target="_blank" rel="noopener">+56 9 9752 8322</a></div>
+            <div><span>Instagram</span><a href="https://www.instagram.com/jean.matiias/" target="_blank" rel="noopener">@jean.matiias</a></div>
+            <div><span>Dónde entreno</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Gym+Eleven+Club+Av.+Argentina+2529" target="_blank" rel="noopener">Gym Eleven Club · Av. Argentina 2529</a></div>
+          </div>
+        </div>
+        <form id="leadForm">
+          <div class="field"><label for="nombre">Nombre</label><input id="nombre" required></div>
+          <div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" required></div>
+          <div class="field"><label for="objetivo">Tu objetivo</label><textarea id="objetivo" placeholder="Ej: bajar de peso, ganar fuerza, prepararme para un HYROX..."></textarea></div>
+          <button class="btn btn-solid" style="width:100%; padding:14px;">Enviar por WhatsApp</button>
+          <p id="formOk" style="display:none; color:var(--text-dim); font-size:13px; margin-top:12px;">Se abrió WhatsApp con tu mensaje. ¡Solo toca enviar!</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo"><span class="dot"></span>JM FIT</div>
+    <div class="foot-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#planes">Planes</a>
+      <a href="#contacto">Contacto</a>
+      <a href="https://www.instagram.com/jean.matiias/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </div>
+  <div class="wrap foot-copy">© 2026 JM FIT. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const panel = document.getElementById('mobilePanel');
+  burger.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    panel.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }));
+  document.getElementById('leadForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const n = document.getElementById('nombre').value.trim();
+    const m = document.getElementById('email').value.trim();
+    const o = document.getElementById('objetivo').value.trim();
+    const txt = `Hola, quiero ser cliente de JM FIT.\nNombre: ${n}\nCorreo: ${m}` + (o ? `\nObjetivo: ${o}` : '');
+    window.open('https://wa.me/56997528322?text=' + encodeURIComponent(txt), '_blank');
+    document.getElementById('formOk').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
